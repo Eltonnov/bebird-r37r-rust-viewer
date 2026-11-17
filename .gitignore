@@ -1,0 +1,20 @@
+/target/
+/Aufnahmen/
+*.jpg
+*.jpeg
+*.png
+*.pcap
+*.pcapng
+*.apk
+*.aab
+*.apks
+*.so
+*.dex
+*.jks
+*.keystore
+*.log
+.env
+.env.*
+.idea/
+.vscode/
+# Cargo.lock should be committed for reproducible application builds

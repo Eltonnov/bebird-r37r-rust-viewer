@@ -1,0 +1,16 @@
+name: Rust Windows
+on:
+  push:
+  pull_request:
+jobs:
+  test-build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+      - name: Test
+        run: cargo test
+      - name: Release build
+        run: cargo build --release

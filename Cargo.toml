@@ -1,0 +1,10 @@
+[package]
+name = "bebird-r37r-viewer"
+version = "0.4.1"
+edition = "2021"
+description = "Experimental local Bebird R37R UDP MJPEG viewer for Windows"
+
+[dependencies]
+minifb = "0.29.0"
+image = { version = "0.25.10", default-features = false, features = ["jpeg"] }
+font8x8 = "0.3.1"
