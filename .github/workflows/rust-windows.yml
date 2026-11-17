@@ -16,9 +16,9 @@ jobs:
         with:
           components: rustfmt, clippy
       - name: Test
-        run: cargo test --locked
+        run: cargo test
       - name: Release build
-        run: cargo build --release --locked
+        run: cargo build --release
       - name: Prepare Windows download
         if: github.event_name == 'push'
         shell: pwsh
