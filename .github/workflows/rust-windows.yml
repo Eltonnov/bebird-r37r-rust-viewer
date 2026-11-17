@@ -1,16 +1,40 @@
 name: Rust Windows
 on:
   push:
+    branches: [main]
   pull_request:
+
+permissions:
+  contents: read
+
 jobs:
   test-build:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: dtolnay/rust-toolchain@stable
         with:
           components: rustfmt, clippy
       - name: Test
-        run: cargo test
+        run: cargo test --locked
       - name: Release build
-        run: cargo build --release
+        run: cargo build --release --locked
+      - name: Prepare Windows download
+        if: github.event_name == 'push'
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          New-Item -ItemType Directory -Path dist -Force | Out-Null
+          Copy-Item 'target/release/bebird-r37r-viewer.exe' 'dist/bebird-r37r-viewer.exe'
+          Copy-Item 'README.md' 'dist/README.md'
+          Copy-Item 'LICENSE' 'dist/LICENSE'
+          $hash = (Get-FileHash 'dist/bebird-r37r-viewer.exe' -Algorithm SHA256).Hash
+          "$hash  bebird-r37r-viewer.exe" | Set-Content 'dist/SHA256SUMS.txt' -Encoding ascii
+      - name: Upload Windows application
+        if: github.event_name == 'push'
+        uses: actions/upload-artifact@v7
+        with:
+          name: Bebird-R37R-Windows-x64-v0.4.1
+          path: dist/
+          if-no-files-found: error
+          retention-days: 30
